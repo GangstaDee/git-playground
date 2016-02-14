@@ -1,0 +1,71 @@
+git clone https://github.com/GangstaDee/git-playground.git
+cd git-playground
+git branch -a        [view all branches]
+
+Дальше вся работа ТОЛЬКО в command line. Все команды для выполнения задания выписываешь в текстовый файлик. 
+Результат выполнения задания: текстовый файлик с коммандами (как делался каждый шаг), пулл реквест на МОЙ репозиторий.
+
+Таски:
+1. Сделай коммит в ветку featureX (добавь новый файл, измени существующий)
+git checkout featureX
+git add folder_a/new_file_a.txt
+git status
+git commit -m "Commit to branch featureX"
+
+2. Сделай мерж featureX в ветку rc
+git checkout rc
+git merge featureX   --> merge failed (project.version)
+[fix project.version in rc branch]
+git add project.version
+git commit -m "Merged featureX branch - fixed conflict"
+
+3. Смержи ветку rc в master
+git checkout master
+git merge rc
+
+4. Сделай пару коммитов в ветку featureY. Запушь изменения ветки featureY в github.
+git checkout featureY
+git add folder_c
+git add folder_b
+git status   [to check files added for commit]
+git commit -m "changed folders B and C"
+git add folder_b
+git commit -m "feature Y"
+git push origin featureY
+
+
+5. Так получилось, что мы хотим собрать билд с ветки master, но нам очень нужны изменения из коммита с комментом "feature Y". Найди его и сделай cherry-pick в master.
+git log -g --grep="feature Y"
+[7c0b598e82d58f58341c2d10f1620ccee95fed36]
+git commit -m "changes from master"
+git cherry-pick 7c0b598e82d58f58341c2d10f1620ccee95fed36
+
+6. Если ветка featureX больше не нужна - удали ее.
+git checkout featureX
+[нужна - 1 commit not pushed]
+
+7. Смержи ветку featureY в rc, а затем все изменения из rc в master. Удали все вмерженные ветки.
+git checkout rc
+git merge featureY
+[resolving conflicts]
+git add project.version
+git add folder_b/file_b.txt
+git add folder_a/file_a.txt
+git commit -m "Merged featureY to rc - fixed conflicts"
+git checkout master
+git merge rc
+
+git branch --merged    [to see the list]
+git branch -d featureY
+git branch -D featureY
+git branch -D rc
+
+[remote branches are not deleted]
+
+8. Создай ветку dev на основе последнего состояния master.
+git checkout -b dev master
+
+9. Запушь все изменения в github.
+git push origin dev
+
+10. Создай пулл реквест мне в репозиторий, чтобы я мог посмотреть проделанную работу.
